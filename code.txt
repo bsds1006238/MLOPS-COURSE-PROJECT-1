@@ -1,0 +1,5 @@
+## SETUP ###
+
+### Auto install requirements.txt #####
+
+pip install -e .
