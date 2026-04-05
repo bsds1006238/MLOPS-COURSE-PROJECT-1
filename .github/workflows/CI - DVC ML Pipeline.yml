@@ -72,7 +72,7 @@ jobs:
 
       - name: Pull DVC data
         run: |
-          dvc pull
+          dvc pull --force
       
   Model-Training:
     needs: dvc-pull
@@ -96,6 +96,7 @@ jobs:
           pip install -r requirements.txt
           pip install "dvc[gcs]"
           pip install "dvc-gs"
+          pip install "feast[gcp]"
       
       - name: Authenticate to GCP
         id: auth
