@@ -24,6 +24,11 @@ from scipy.stats import randint
 logger = get_logger(__name__)
 
 
+MLFLOW_DIR = os.path.join(os.getcwd(), "mlruns")
+os.makedirs(MLFLOW_DIR, exist_ok=True)
+mlflow.set_tracking_uri(f"file://{MLFLOW_DIR}")
+
+
 class ModelTraining:
     
     def __init__(self,train_path,test_path,model_output_path):
