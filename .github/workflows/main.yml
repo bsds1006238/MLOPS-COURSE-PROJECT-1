@@ -1,0 +1,94 @@
+name: CI - DVC ML Pipeline
+
+on:
+  workflow_dispatch:
+    branches:
+      - oppe1_practise
+
+jobs:
+  gcp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install "dvc[gcs]"
+      
+      - name: Authenticate to GCP
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      
+      - name: Verify login
+        run: |
+          gcloud auth list
+          gcloud config list
+
+      - name: Run DVC pipeline
+        run: |
+          dvc pull
+          dvc repro
+      
+
+      - name: Run ML pipeline scripts
+        run: |
+          set -e  # fail immediately on error
+
+          echo "🚀 Running data ingestion"
+          python src/data_ingestion.py
+
+          echo "🧠 Running feature engineering"
+          feast -c feast-repo/feature_repo apply
+
+          echo "Materialise Feast features"
+          feast -c feast-repo/feature_repo materialize-incremental \
+            $(date -u +"%Y-%m-%dT%H:%M:%S")
+
+
+          echo "🧹 Running data processing"
+          python src/data_processing.py
+
+          echo "🤖 Running model training"
+          python src/model_training.py
+
+      
+      - name: Run pytest
+        run: |
+          pytest -q \
+            --junitxml=results.xml \
+            --json-report \
+            --json-report-file=metrics.json
+
+      - name: Create CML report
+        run: |
+          echo "## ✅ Pytest Results" > report.md
+          echo "" >> report.md
+
+          echo "### 📊 Test Summary" >> report.md
+          jq '.summary' metrics.json >> report.md
+          echo "" >> report.md
+
+          echo "### 🧪 Model Metrics" >> report.md
+          jq '.tests[].metadata.model_metrics' metrics.json >> report.md
+
+      - name: Publish CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cml comment create report.md
