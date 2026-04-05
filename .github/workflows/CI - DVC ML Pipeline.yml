@@ -106,9 +106,10 @@ jobs:
       - name: Run ML pipeline scripts
         run: |
           set -e  # fail immediately on error
+          export PYTHONPATH="$PWD"
 
           echo "🚀 Running data ingestion"
-          python -m src/data_ingestion.py
+          python -m src.data_ingestion
 
           echo "🧠 Running feature engineering"
           feast -c feast-repo/feature_repo apply
@@ -119,10 +120,10 @@ jobs:
 
 
           echo "🧹 Running data processing"
-          python -m src/data_processing.py
+          python -m src.data_processing
 
           echo "🤖 Running model training"
-          python -m src/model_training.py
+          python -m src.model_training
 
       
       - name: Run pytest
