@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  gcp-deploy:
+  gcp-auth-and-run-pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -41,7 +41,10 @@ jobs:
         run: |
           gcloud auth list
           gcloud config list
-
+          
+  dvc-pull:
+    runs-on: ubuntu-latest
+    steps:
       - name: Run DVC pipeline
         run: |
           dvc pull
