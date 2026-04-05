@@ -75,6 +75,10 @@ jobs:
             --junitxml=results.xml \
             --json-report \
             --json-report-file=metrics.json
+      
+      
+      - name: Set up CML
+        uses: iterative/setup-cml@v2
 
       - name: Create CML report
         run: |

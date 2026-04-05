@@ -14,4 +14,3 @@ google-cloud-bigquery
 db-dtypes
 pytest
 pytest-json-report
-cml
