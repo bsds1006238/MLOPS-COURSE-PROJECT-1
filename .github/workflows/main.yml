@@ -3,7 +3,7 @@ name: CI - DVC ML Pipeline
 on:
   workflow_dispatch:
     branches:
-      - oppe1_practise
+      - oppe1
 
 jobs:
   gcp-deploy:
