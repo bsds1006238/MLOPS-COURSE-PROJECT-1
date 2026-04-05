@@ -23,6 +23,7 @@ jobs:
           pip install cloud-ml-sdk --no-deps
           pip install -r requirements.txt
           pip install "dvc[gcs]"
+          pip install "dvc-gs"
       
       - name: Authenticate to GCP
         id: auth
