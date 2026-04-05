@@ -4,7 +4,7 @@ import os
 ################### DATA INGESTION #################
 
 RAW_DIR = 'artifacts/raw'
-RAW_FILE_PATH = os.path.join(RAW_DIR,"raw.csv")
+RAW_FILE_PATH = os.path.join(RAW_DIR,"iris.csv")
 TRAIN_FILE_PATH = os.path.join(RAW_DIR,"train.csv")
 TEST_FILE_PATH = os.path.join(RAW_DIR,"test.csv")
 
@@ -20,4 +20,4 @@ PROCESSED_TEST_DATA_PATH = os.path.join(PROCESSED_DIR,"processed_test.csv")
 
 ################ MODEL OUTPUT PATH ##########
 
-MODEL_OUTPUT_PATH = 'artifacts/model/lgbm_model.pk1'
+MODEL_OUTPUT_PATH = 'artifacts/model/rf_model.pkl'

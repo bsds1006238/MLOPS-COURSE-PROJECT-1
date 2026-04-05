@@ -1,33 +1,42 @@
 data_ingestion:
-  bucket_name : "my_hotel_reserve"
-  bucket_filename : "Hotel_Reservations.csv"
+  bucket_name : "oppe_1"
+  project_id : "project-9b8dd2a1-dbd5-49ac-9bc"
+  bucket_filename : "data/raw/iris.csv"
   train_ratio : 0.8
+  bq_dataset : "iris_dataset"
+  bq_table : "iris_table"
+  feast_repo_path: "feast-repo/feature_repo"
+  schema:
+        - name: "sepal_length"
+          type: "FLOAT64"
+    
+        - name: "sepal_width"
+          type: "FLOAT64"
+    
+        - name: "petal_length"
+          type: "FLOAT64"
+    
+        - name: "petal_width"
+          type: "FLOAT64"
+    
+        - name: "species"
+          type: "STRING"
+        
+        - name: "iris_id"
+          type: "STRING"
+
+        - name: "event_timestamp"
+          type: "DATE"
 
 data_processing:
   categorical_columns: 
-   - type_of_meal_plan
-   - required_car_parking_space
-   - room_type_reserved 
-   - market_segment_type
-   - repeated_guest
-   - booking_status
 
   numerical_columns:
-   - no_of_adults
-   - no_of_children
-   - no_of_weekend_nights
-   - no_of_week_nights
-   - lead_time
-   - arrival_year
-   - arrival_month
-   - arrival_date
-   - no_of_previous_cancellations
-   - no_of_previous_bookings_not_canceled
-   - avg_price_per_room
-   - no_of_special_requests
+   - sepal_length
+   - sepal_width
+   - petal_length
+   - petal_width
 
-  skewness_threshold: 5
-
-  no_of_features : 10
+  no_of_features : 4
 
   
