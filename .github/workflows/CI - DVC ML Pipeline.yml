@@ -45,7 +45,6 @@ jobs:
       - name: Run DVC pipeline
         run: |
           dvc pull
-          dvc repro
       
 
       - name: Run ML pipeline scripts
