@@ -41,11 +41,14 @@ jobs:
         run: |
           gcloud auth list
           gcloud config list
-          
+
   dvc-pull:
+    needs: gcp-auth-and-run-pipeline
     runs-on: ubuntu-latest
     steps:
-      - name: Run DVC pipeline
+      - uses: actions/checkout@v2
+
+      - name: Pull DVC data
         run: |
           dvc pull
       
